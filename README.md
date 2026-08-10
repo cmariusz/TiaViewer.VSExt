@@ -1,7 +1,9 @@
 # TIA Viewer and web generator
 
 <!-- VERSION-BADGE -->
+
 [![Version](https://img.shields.io/badge/version-1.0.3-blue)](package.json)
+
 <!-- /VERSION-BADGE -->
 
 [![VS Code](<https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode>)](https://code.visualstudio.com/)
@@ -17,6 +19,8 @@ Designed to cooperate with the [TIA Portal Import](https://github.com/cmariusz/T
 > 💡 **Tip:** Install the companion **[TIA Portal Import](https://marketplace.visualstudio.com/items?itemName=MariuszCzyrnek.tia-import)** extension to connect VS Code directly to TIA Portal: export blocks, tag tables and UDTs straight into your workspace (`TiaExport/...`), then view them here with one right-click — no manual exporting, no intermediate tools. The two extensions are built to work together.
 
 If this extension helps your TIA Portal workflow, you can support ongoing development with a voluntary [PayPal donation](https://www.paypal.com/donate/?hosted_button_id=68KF5N2K5QQVY).
+
+![Tia Viewer Overview](Screenshots/TiaViewer_Overview.png)
 
 ---
 
@@ -89,6 +93,8 @@ Right-click inside the preview for **Open block** (on a call box) and **Go to So
 3. Open the generated `index.html` in a browser (the notification offers an **Open Preview** button).
 
 Every block source under `Program blocks` and `PLC data types` is rendered into a mirror folder tree of standalone previews (with clickable cross-block navigation links), and every tag table under `PLC tags` gets a table page sorted by PLC address. The `index.html` navigator provides a collapsible sidebar tree mirroring the TIA folder structure, a block filter, expand/collapse all, a split view for comparing two blocks side by side and a dark/light theme toggle. The viewer CSS/JS is written once to `_assets/` and shared by all pages, so the output stays compact even for large PLCs.
+
+![Tia Viewer WebPreview](Screenshots/TiaViewer_WebPreview.png)
 
 ### Supported input formats
 
