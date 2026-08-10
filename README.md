@@ -2,7 +2,7 @@
 
 <!-- VERSION-BADGE -->
 
-[![Version](https://img.shields.io/badge/version-1.0.3-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](package.json)
 
 <!-- /VERSION-BADGE -->
 
@@ -177,15 +177,12 @@ The library parses SimaticML **XML** and S7 **`.s7dcl` + `.s7res`** sources into
   - `GetViewerAssets` — `{}` → the shared viewer CSS/JS bundle for external-asset previews.
 - **From a .NET application** — reference the netstandard2.0 build and call the API directly: `BlockSources.Parse(...)` for parsing, `BlockRenderer.RenderBlockContentHtml(...)` for body markup, `StandaloneHtml` for a full document.
 
-Renderer parity is frozen as golden files in `dotnet/TiaViewer.Tests/Golden/` and guarded by 150 xUnit tests (`npm run test:dotnet`).
-
 ---
 
 ## Documentation
 
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) — third-party components and redistribution notes
 - [CHANGELOG.md](CHANGELOG.md) — release history
-- [.github/copilot-instructions.md](.github/copilot-instructions.md) — contributor/architecture notes (viewer internals, golden tests, build commands)
 
 ---
 
@@ -216,7 +213,7 @@ The author is not liable for any direct or indirect damages, production downtime
 
 **We encourage you to contribute!** If you have created useful scripts, export samples, or improvements:
 
-1. **Fork** the [TiaViewer.ExtVScode](https://github.com/cmariusz/TiaViewer.ExtVScode) repository on GitHub
+1. **Fork** the [TiaViewer.VSExt](https://github.com/cmariusz/TiaViewer.VSExt) repository on GitHub
 2. **Open a Pull Request** — your contribution will help the entire TIA Portal + VS Code community
 
 ---
