@@ -1,8 +1,8 @@
-# TIA Viewer and web generator
+# TIA Viewer and Web Generator
 
 <!-- VERSION-BADGE -->
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.0-blue)](package.json)
 
 <!-- /VERSION-BADGE -->
 
@@ -12,7 +12,7 @@
 [![Author](<https://img.shields.io/badge/Author-Mariusz%20Czyrnek-orange?logo=linkedin>)](https://www.linkedin.com/in/mariusz-czyrnek-a33b87a6)
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=68KF5N2K5QQVY)
 
-**Graphical viewer for Siemens TIA Portal PLC exports** — renders LAD/FBD networks, SCL/STL sources, GRAPH sequential function charts, data blocks, PLC data types and tag tables as readable HTML directly inside VS Code or as standalone HTML files. TIA software web preview generator for rewiew software in the web browser.
+**Graphical viewer for Siemens TIA Portal PLC exports** — renders LAD/FBD networks, SCL/STL sources, GRAPH sequential function charts, data blocks, PLC data types and tag tables as readable HTML directly inside VS Code or as standalone HTML files. TIA software web preview generator for rewiew software in the web browser and analyse online data.
 
 Designed to cooperate with the [TIA Portal Import](https://github.com/cmariusz/TiaImportExport.VSExt) extension, which produces the export folder structure this viewer understands (`Program blocks`, `PLC data types`, `PLC tags`) — but any TIA Portal XML/SD export dropped into your workspace works.
 
@@ -95,6 +95,27 @@ Right-click inside the preview for **Open block** (on a call box) and **Go to So
 Every block source under `Program blocks` and `PLC data types` is rendered into a mirror folder tree of standalone previews (with clickable cross-block navigation links), and every tag table under `PLC tags` gets a table page sorted by PLC address. The `index.html` navigator provides a collapsible sidebar tree mirroring the TIA folder structure, a block filter, expand/collapse all, a split view for comparing two blocks side by side and a dark/light theme toggle. The viewer CSS/JS is written once to `_assets/` and shared by all pages, so the output stays compact even for large PLCs.
 
 ![Tia Viewer WebPreview](Screenshots/TiaViewer_WebPreview.png)
+
+#### PLC Online (live values)
+
+The navigator sidebar contains a collapsible **PLC Online** panel that connects the preview directly to a SIMATIC S7 CPU (S7-1500 / S7-1200 G2) through its built-in web server (JSON-RPC API — see `.github/SimaticWebApi.md`):
+
+1. Expand **PLC Online**, enter the CPU **address**, a **user** and **password** (a user with read access configured in TIA User Management; the password is kept in memory only, never persisted).
+2. Pick the **read interval** (ms) and the **update mode** — *Every interval* rewrites all values each cycle, *Only on change* updates the table only when a value actually changes.
+3. Press **Test connection** to verify HTTPS reachability and the credentials without going online (the status line reports the result and the CPU operating mode, or a missing-permissions hint).
+4. Press **Go online**. The status line shows the connection state and the CPU operating mode (run/stop). Press **Go offline** to disconnect and log out.
+
+While online, opening a **watch table** from the tree shows a **Monitor value** column with live values of the watched tags, refreshed at the configured interval.
+
+The same live monitoring works on **data block pages** (global DBs and instance DBs, including technology object instance DBs): the interface table gains a **Monitor value** column right after the variable name. Only variables with the **Accessible from HMI/OPC UA** attribute (`ExternalAccessible`) are monitored — the flag is inherited down the member tree, so expanding a struct, UDT or multi-instance FB reveals live values for its elements. Arrays of elementary types are monitored per element (`"DB"."arr"[0]`; arrays over 256 elements, arrays of Struct/UDT and whole structs cannot be read through the web API — use a watch table for those). The attribute flags shown in the expanded rows are filled in from the UDT/FB type export when the DB export omits them.
+
+Prerequisites on the PLC/TIA side: the web server must be enabled on the CPU, **CORS must be allowed** in the web server settings, and — because S7 CPUs use a self-signed certificate by default — open `https://<cpu-address>/` in the browser once and accept the certificate exception before going online.
+
+#### Online trend chart
+
+While online, right-click any monitored variable row on a data block page and choose **Add to chart** to open a live trend in the split view (uPlot-based, up to 10 series, BOOL charted as 0/1). The menu also lets you assign the series to an existing Y axis or create a **New Y axis** for it (up to 5 axes; extras stack on the right with their own scale, and disappear when their last series is removed). The chart records a timestamped sample on every poll and keeps a ring buffer trimmed to the **Max recording time** from the **Trend** panel in the navigator sidebar (default 10 min — retention only; the panel also has an **Open chart** button). The visible time window auto-scrolls with the live edge and is set independently on the chart toolbar (default 30 s, clamped to the retention); pan back with **◀** **▶** to freeze it (recording continues) and press **Follow** to re-attach. Drag-select a range on the chart to zoom into it (the window field shows the dragged span); double-click returns to live follow. Hover the chart for cursor values in the legend; click a legend label to hide/show a series (ctrl-click isolates it). The toolbar also offers pause (redraws only), clear, CSV export and saving/loading the chart configuration as JSON.
+
+![Tia Viewer WebPreview](Screenshots/TiaViewer_WebOnlineData.png)
 
 ### Supported input formats
 

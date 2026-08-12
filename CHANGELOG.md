@@ -1,5 +1,11 @@
 # Change Log
 
-## 1.0.0
+## [1.1.0]
+
+- Online trend chart in the whole-PLC web preview: right-click a variable row on a data block (DB/IDB) page → "Add to chart" opens a uPlot-based live trend in the split view, fed by the PLC Online session (a timestamped sample on every poll, also in on-change mode); the menu also offers assigning the series to an existing Y axis or a newly created one (up to 5 axes, extras stacked on the right). Up to 10 series, ring buffer trimmed by the configurable max recording time (default 10 min, new "Trend" panel in the navigator sidebar — retention only), BOOL values charted as 0/1. The displayed time window is set independently on the chart toolbar (default 30 s, clamped to the retention) and auto-scrolls with the live edge (pan ◀/▶ to freeze, "Follow" to re-attach); drag-selecting a range zooms the chart to it and mirrors the span into the window field, double-click returns to live follow. The legend shows cursor values and its labels toggle series visibility. Toolbar: pan/window/follow, pause, clear, CSV export, save/load chart configuration as JSON (incl. axis assignments). uPlot (MIT) is vendored as embedded viewer assets.
+- PLC Online live monitoring on data block pages (global DB / instance DB, incl. technology object instance DBs) in the whole-PLC web preview: the interface table gains a "Monitor value" column next to the variable name, showing online values for variables with the `ExternalAccessible` attribute ("Accessible from HMI/OPC UA"). The flag is inherited into expanded structs/UDTs/multi-instances, and arrays of elementary types are monitored per element (up to 256 elements). Reuses the watch-table live protocol — no extra setup beyond the existing PLC Online panel.
+- Expanded UDT/struct/FB-instance rows now show the attribute flags (Accessible/Writable/Visible/Setpoint) as set in the type source: DB exports inline the instance interface without member attributes, so the missing flags are merged from the UDT/FB export by member/section name (explicit inline values win). Type references written bare (`Datatype="Filter_PT2"`, unquoted — typical for V21 exports) now resolve as well.
+
+## [1.0.0]
 
 - Initial standalone release: LAD/FBD/SCL/GRAPH graphical preview, HTML preview files and whole-PLC web preview, extracted from the TIA Portal Import extension.
