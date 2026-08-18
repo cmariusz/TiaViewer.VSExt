@@ -1,5 +1,18 @@
 # Change Log
 
+## [1.1.20]
+
+- Write to PLC from the online views (VS Code graphical preview and whole-PLC web preview): while online, clicking the monitor value of a variable with the `Writable` attribute ("Writable from HMI/OPC UA") opens a popup with a value input and SET/CANCEL buttons (Bool variables get a TOGGLE button instead of the input, writing the negation of the current value); SET writes the value through `PlcProgram.Write` (per-type parsing: Bool, integers incl. `16#` hex notation, Real, strings, numeric time/date values; write errors like missing write permission or a type mismatch are shown in the popup). Available on data block (DB/IDB) pages and on FB block interfaces (values go to the instance picked in the instance picker), including flags inherited into structs and per-element writes in arrays of elementary types.
+- Fixed: in the VS Code preview webview the interface monitor value of a variable stopped refreshing once the variable was added to the trend chart (the chart kept updating) — the poll loop now updates both.
+
+## [1.1.19]
+
+- GRAPH online monitoring (VS Code graphical preview and whole-PLC web preview): while online, FB pages of GRAPH blocks show the flowchart state live — the currently active step is highlighted green (from the step's `X` flag of its `G7_StepPlus` struct in the picked instance), and opening a transition popup shows its criteria bits: the polled `CRIT` value as hex/decimal plus a TRUE (green) / FALSE (blue) state under every operand of the transition condition. The per-operand states are decoded from the single `CRIT` read (bit N = N-th condition operand — verified against the TIA GRAPH online view); the operand variables are never read directly.
+
+## [1.1.1]
+
+- Fixed HMI attribute flags (Accessible/Writable/Visible/Setpoint) in the interface table for S7 source exports (`.s7dcl`/`.scl`/`.udt`) — the decoding now matches the TIA Portal interface editor: a member is fully HMI-accessible by default, also when its attribute block carries only `S7_MLC` texts (previously such members showed no flags at all); `S7_Visibility := "Hidden := External"` clears Accessible/Writable/Visible, `S7_Visibility := "Unlisted := External"` clears only Visible (was ignored), `S7_Access := "ReadOnly := External"` clears Writable, and Setpoint defaults to off (was on for attribute-less members). Temp and Constant sections no longer show HMI flags (greyed out in TIA), and the FC `Ret_Val` row gets the default fully-accessible flags.
+
 ## [1.1.0]
 
 - Online trend chart in the whole-PLC web preview: right-click a variable row on a data block (DB/IDB) page → "Add to chart" opens a uPlot-based live trend in the split view, fed by the PLC Online session (a timestamped sample on every poll, also in on-change mode); the menu also offers assigning the series to an existing Y axis or a newly created one (up to 5 axes, extras stacked on the right). Up to 10 series, ring buffer trimmed by the configurable max recording time (default 10 min, new "Trend" panel in the navigator sidebar — retention only), BOOL values charted as 0/1. The displayed time window is set independently on the chart toolbar (default 30 s, clamped to the retention) and auto-scrolls with the live edge (pan ◀/▶ to freeze, "Follow" to re-attach); drag-selecting a range zooms the chart to it and mirrors the span into the window field, double-click returns to live follow. The legend shows cursor values and its labels toggle series visibility. Toolbar: pan/window/follow, pause, clear, CSV export, save/load chart configuration as JSON (incl. axis assignments). uPlot (MIT) is vendored as embedded viewer assets.
