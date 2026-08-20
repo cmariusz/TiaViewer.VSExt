@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.1.33]
+
+- Copilot language model tools for PLC online access: once you go online in a graphical preview (PLC Online → **Go online**), GitHub Copilot can work with the PLC through four new tools — `#plcSessions` (list PLCs with an active online session), `#plcRead` (read online variables), `#plcWrite` (write one online variable, with a per-write confirmation unless `tiaViewer.lmTools.autoConfirmPlcWrites` is enabled) and `#plcTrendData` (archived trend series). The tools reuse the panel's shared PLC session and never see your credentials. Data-block variables (`"DB"."Member"…`) are checked against the exported block sources in the workspace before any access: reads require the **Accessible from HMI/OPC UA** attribute, writes require **Writable from HMI/OPC UA** — with the same inheritance rules as the interface table (Temp/Constant sections and complex InOut members are excluded); block exports are found anywhere in the workspace (`Program blocks`, `Units/<unit>`, `Technology objects` or loose PLC folders). `#plcTrendData` can also **start recording variables autonomously** (`action: "record"`, optionally mirrored onto the trend chart with `showChart`) and stop it (`action: "clear"`), so agentic workflows like PID tuning — record setpoint/process value/output, read the step response, adjust `Gain`/`Ti`/`Td`, repeat — run without any further user interaction beyond the initial Go online and the write confirmations.
+
+## [1.1.26]
+
+- Double-click (or single-click preview) on a block source in the Explorer now opens the Graphical LAD/FBD preview directly — the viewer is registered as the default editor for `.s7dcl`, `.db`, `.scl`, `.udt` and SimaticML `.xml` files. XML files that are not TIA Portal exports still open in the regular text editor (detected by content), and the text editor stays available for every supported type via right-click → **Open With...** → **Text Editor**.
+
 ## [1.1.20]
 
 - Write to PLC from the online views (VS Code graphical preview and whole-PLC web preview): while online, clicking the monitor value of a variable with the `Writable` attribute ("Writable from HMI/OPC UA") opens a popup with a value input and SET/CANCEL buttons (Bool variables get a TOGGLE button instead of the input, writing the negation of the current value); SET writes the value through `PlcProgram.Write` (per-type parsing: Bool, integers incl. `16#` hex notation, Real, strings, numeric time/date values; write errors like missing write permission or a type mismatch are shown in the popup). Available on data block (DB/IDB) pages and on FB block interfaces (values go to the instance picked in the instance picker), including flags inherited into structs and per-element writes in arrays of elementary types.

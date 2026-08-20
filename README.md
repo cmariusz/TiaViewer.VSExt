@@ -1,7 +1,7 @@
 # TIA Viewer and Web Generator
 
 <!-- VERSION-BADGE -->
-[![Version](https://img.shields.io/badge/version-1.1.23-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.33-blue)](package.json)
 <!-- /VERSION-BADGE -->
 
 [![VS Code](<https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode>)](https://code.visualstudio.com/)
@@ -63,7 +63,7 @@ If this extension helps your TIA Portal workflow, you can support ongoing develo
 1. Install the extension from VS Code Marketplace (or `code --install-extension MariuszCzyrnek.tia-viewer`)
 2. **Recommended:** install the companion **[TIA Portal Import](https://marketplace.visualstudio.com/items?itemName=MariuszCzyrnek.tia-import)** extension (`code --install-extension MariuszCzyrnek.tia-import`) to export PLC programs directly from TIA Portal into your workspace
 3. Open a workspace containing TIA Portal exports (e.g. a `TiaExport/Projects/...` tree created by TIA Portal Import)
-4. Right-click a block file or PLC folder in the Explorer and pick a preview command
+4. Double-click a block file in the Explorer (or right-click it / a PLC folder and pick a preview command)
 
 ---
 
@@ -71,8 +71,7 @@ If this extension helps your TIA Portal workflow, you can support ongoing develo
 
 ### Previewing a block (interactive webview)
 
-1. In VS Code Explorer, right-click a SimaticML **XML** block, a **`.s7dcl`** source document (the matching `.s7res` is picked up automatically), or a **`.scl`** / **`.db`** / **`.udt`** source.
-2. Choose **Graphical preview LAD/FBD**.
+Double-click (or single-click preview) a SimaticML **XML** block, a **`.s7dcl`** source document (the matching `.s7res` is picked up automatically), or a **`.scl`** / **`.db`** / **`.udt`** source in the VS Code Explorer — the graphical viewer is the default editor for these file types. Alternatively, right-click the file and choose **Graphical preview LAD/FBD**. XML files that are not TIA Portal exports still open in the regular text editor, and for any supported file the source can be opened as text via right-click → **Open source file** (or **Open With...** → **Text Editor**).
 
 The viewer renders the block interface (resizable, collapsible columns), LAD rungs, FBD networks, syntax-highlighted SCL/STL and GRAPH sequence flowcharts — all following the active VS Code theme. Networks and the interface panel are collapsible (including Expand all / Collapse all), operand labels and call-box pins show comments as tooltips, and Ctrl+wheel zoom / pan / fit-width are available in the toolbar. In a GRAPH flowchart, clicking a transition opens a popup with its LAD/FBD logic network, clicking a step opens its action table, and hovering a step or a transition shows its comment.
 
@@ -116,6 +115,19 @@ Prerequisites on the PLC/TIA side: the web server must be enabled on the CPU, **
 While online, right-click any monitored variable row on a data block page and choose **Add to chart** to open a live trend in the split view (uPlot-based, up to 10 series, BOOL charted as 0/1). The menu also lets you assign the series to an existing Y axis or create a **New Y axis** for it (up to 5 axes; extras stack on the right with their own scale, and disappear when their last series is removed). The chart records a timestamped sample on every poll and keeps a ring buffer trimmed to the **Max recording time** from the **Trend** panel in the navigator sidebar (default 10 min — retention only; the panel also has an **Open chart** button). The visible time window auto-scrolls with the live edge and is set independently on the chart toolbar (default 30 s, clamped to the retention); pan back with **◀** **▶** to freeze it (recording continues) and press **Follow** to re-attach. Drag-select a range on the chart to zoom into it (the window field shows the dragged span); double-click returns to live follow. Hover the chart for cursor values in the legend; click a legend label to hide/show a series (ctrl-click isolates it). The toolbar also offers pause (redraws only), clear, CSV export and saving/loading the chart configuration as JSON.
 
 ![Tia Viewer WebPreview](Screenshots/TiaViewer_WebOnlineData.png)
+
+#### Copilot tools (PLC online)
+
+While a preview panel is online, GitHub Copilot (agent mode / chat participants) can access the PLC through the extension's language model tools — they reuse the panel's online session and never ask for credentials:
+
+| Tool                  | Reference       | Description                                                                                                                                      |
+| --------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| PLC Online Sessions   | `#plcSessions`  | List the PLCs with an active online session (host, web API user).                                                                                |
+| Read PLC Variables    | `#plcRead`      | Read online values of variables (`"DB"."Member"…` paths, PLC tags). Requires **Accessible from HMI/OPC UA** on DB members.                        |
+| Write PLC Variable    | `#plcWrite`     | Write one online variable (`PlcProgram.Write`). Requires **Writable from HMI/OPC UA**; every write is confirmed by you (see the setting below).    |
+| Trend Data            | `#plcTrendData` | List/read the archived trend series, and start/stop **autonomous recording** (`action: "record"`/`"clear"`) — no chart interaction needed.        |
+
+The Accessible/Writable attributes are verified against the exported block sources in the workspace (found anywhere — `Program blocks`, `Units/<unit>`, `Technology objects` or loose PLC folders) with the same inheritance rules as the interface table. This enables agentic workflows such as PID tuning: Copilot records the controller's setpoint / process value / output into the trend, reads the step response, writes adjusted parameters and repeats — you only go online once and confirm the writes. Writes are confirmed per call unless you enable `tiaViewer.lmTools.autoConfirmPlcWrites` (use only in safe setups — writing to a running PLC affects the controlled process).
 
 ### Supported input formats
 
