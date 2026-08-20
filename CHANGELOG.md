@@ -1,6 +1,6 @@
 # Change Log
 
-## [1.1.37]
+## [1.1.42]
 
 - "Sequence control" panel for GRAPH sequencer FBs (VS Code graphical preview and whole-PLC web preview): on FB pages whose interface carries the standard sequencer inputs (`INIT_SQ`, `OFF_SQ`, `ACK_EF`, …), a floating, draggable panel — styled after the TIA test panel — offers **Initialize**, **Deactivate all**, **Acknowledge -(V)-**, the mode radios Automatic / Semiautomatic (+ **Ignore transition**) / Manual (+ **Next** and manual step selection with **Enable**/**Disable**). Actions pulse the corresponding sequencer input of the instance picked in the instance picker (edge-triggered: write TRUE, then FALSE); the mode radios follow the polled `AUTO_ON`/`TAP_ON`/`TOP_ON`/`MAN_ON` outputs. The panel requires an online PLC session and writes through `PlcProgram.Write`. Writes do not target the instance DB directly (sequencer inputs are typically not writable there); instead the panel detects the variables wired to the pins of the sequence call (e.g. `"SEQ_IDB"(INIT_SQ := #INIT_SQ)` in the calling block) and writes through them (`"SeqPrep_IDB"."INIT_SQ"`); a pin without wiring falls back to the direct IDB write. The status line shows the actual PLC variable written.
 
