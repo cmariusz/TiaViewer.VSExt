@@ -1,7 +1,7 @@
 # TIA Viewer and Web Generator
 
 <!-- VERSION-BADGE -->
-[![Version](https://img.shields.io/badge/version-1.1.48-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.54-blue)](package.json)
 <!-- /VERSION-BADGE -->
 
 [![VS Code](<https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode>)](https://code.visualstudio.com/)
@@ -35,6 +35,40 @@ If this extension helps your TIA Portal workflow, you can support ongoing develo
 | **Failsafe styling**          | F-FBD / F-LAD blocks render with yellow wires and part outlines, like the TIA safety editor.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **Navigation**                | Right-click a call box →**Open block** opens the called FB/FC in the viewer; **Go to Source Line** jumps to the exact source line of a network, part, GRAPH step/transition or interface variable (also on DB/IDB pages). Ctrl+wheel zoom / pan / fit-width in the toolbar.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | **Classic DB sources**        | Classic non-optimized`.db` sources (`DATA_BLOCK "..."`, including a whole-body anonymous `STRUCT`) render as a flat, expanded interface table.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+### Syntax highlighting in the text editor
+
+The extension ships TextMate grammars (the same mechanism the C/C++ and C# extensions use), so opening a TIA Portal export as text — right-click → **Open source file**, or **Open With...** → **Text Editor** — gives you full syntax highlighting:
+
+| Language id  | File type | Highlights                                                                                                                                   |
+| ------------ | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tia-scl`    | `.scl`    | SCL keywords (`IF/FOR/WHILE/CASE/…`), block & VAR-section declarations, data types, `S7_*`/HMI attribute blocks, numbers (`16#…`, `T#…`), strings, comments, `#local` variables |
+| `tia-s7dcl`  | `.s7dcl`  | Header attribute blocks, `FUNCTION`/`VAR_*` sections, `NETWORK`/`RUNG` structure, `wire#…` identifiers, types, strings, comments               |
+| `tia-s7db`   | `.db`     | `DATA_BLOCK` declaration, `VAR`/`STRUCT` sections, `S7_*`/HMI attribute blocks, types, numbers, strings, comments                              |
+| `tia-s7res`  | `.s7res`  | Multilingual resource entries: `- id:` keys, culture codes (`en-US:`) and text values                                                          |
+
+**Code folding** — SCL and s7dcl sources get gutter fold markers (+/…) for whole blocks: `IF`/`FOR`/`WHILE`/`REPEAT`/`CASE`, `REGION` and `NETWORK`. The matcher is case-insensitive and ignores keywords inside comments and string literals.
+
+**Choosing which files are highlighted** — the associations above are defaults; override them with the standard VS Code `files.associations` setting, e.g.:
+
+```json
+"files.associations": {
+    "*.db": "plain text",   // disable highlighting for .db
+    "*.udt": "tia-s7db",    // highlight UDT sources like data blocks
+    "*.awlsrc": "tia-scl"   // map your own extension to the SCL grammar
+}
+```
+
+**Customizing the colors** — every token carries a documented TextMate scope (`keyword.control.tia.scl`, `storage.type.tia.scl`, `comment.line.double-slash.tia.scl`, `support.constant.attribute.tia.scl`, …); restyle any of them via `editor.tokenColorCustomizations`:
+
+```json
+"editor.tokenColorCustomizations": {
+    "textMateRules": [
+        { "scope": "keyword.control.tia.scl", "settings": { "foreground": "#569CD6", "fontStyle": "bold" } },
+        { "scope": "storage.type.tia.scl", "settings": { "foreground": "#4EC9B0" } }
+    ]
+}
+```
 
 ### HTML Previews (standalone files)
 
