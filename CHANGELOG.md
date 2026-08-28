@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.1.55]
+
+- **Write to PLC directly from the LAD/FBD code view** (VS Code graphical preview and whole-PLC web preview): network operand labels of variables with the `Writable` attribute ("Writable from HMI/OPC UA") now open the same write popup as the interface table when clicked (or when their pink online value is clicked) — with the same inheritance rules (Temp/Constant excluded, complex InOut excluded, per-element writes in arrays of elementary types) and the instance path taken from the instance picker.
+- Fixed: the write-to-PLC popup used hardcoded dark colors, so it appeared light in the dark theme and dark in the light theme. It now follows the VS Code theme variables with light fallbacks (the web preview inverts the whole page for its dark mode), matching the "Sequence control" panel.
+- The write-to-PLC popup and the GRAPH transition/step logic popups are now **draggable by their title bar** — the same interaction as the "Sequence control" panel. A backdrop click right after a drag no longer closes the popup.
+
 ## [1.1.54]
 
 - **Code folding in the text editor** for SCL and s7dcl sources: gutter fold markers (+/…) for whole `IF`/`FOR`/`WHILE`/`REPEAT`/`CASE` blocks, `REGION` and `NETWORK`…`END_NETWORK`. Case-insensitive, and keywords inside comments or string literals never start a fold.
