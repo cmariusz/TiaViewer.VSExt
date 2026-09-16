@@ -1,7 +1,7 @@
 # TIA Viewer and Web Generator
 
 <!-- VERSION-BADGE -->
-[![Version](https://img.shields.io/badge/version-1.1.87-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-1.1.103-blue)](package.json)
 <!-- /VERSION-BADGE -->
 
 [![VS Code](<https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode>)](https://code.visualstudio.com/)
@@ -97,7 +97,7 @@ The extension ships TextMate grammars (the same mechanism the C/C++ and C# exten
 1. Install the extension from VS Code Marketplace (or `code --install-extension MariuszCzyrnek.tia-viewer`)
 2. **Recommended:** install the companion **[TIA Portal Import](https://marketplace.visualstudio.com/items?itemName=MariuszCzyrnek.tia-import)** extension (`code --install-extension MariuszCzyrnek.tia-import`) to export PLC programs directly from TIA Portal into your workspace
 3. Open a workspace containing TIA Portal exports (e.g. a `TiaExport/Projects/...` tree created by TIA Portal Import)
-4. Double-click a block file in the Explorer (or right-click it / a PLC folder and pick a preview command)
+4. Double-click a block file in the Explorer — by default it opens in the text editor; set `tiaViewer.editor.openOnClick` to `preview` to open the graphical viewer on click instead (or right-click a file / a PLC folder and pick a preview command)
 
 ---
 
@@ -105,7 +105,7 @@ The extension ships TextMate grammars (the same mechanism the C/C++ and C# exten
 
 ### Previewing a block (interactive webview)
 
-Double-click (or single-click preview) a SimaticML **XML** block, a **`.s7dcl`** source document (the matching `.s7res` is picked up automatically), or a **`.scl`** / **`.db`** / **`.udt`** source in the VS Code Explorer — the graphical viewer is the default editor for these file types. Alternatively, right-click the file and choose **Graphical preview LAD/FBD**. XML files that are not TIA Portal exports still open in the regular text editor, and for any supported file the source can be opened as text via right-click → **Open source file** (or **Open With...** → **Text Editor**).
+Double-click (or single-click preview) a SimaticML **XML** block, a **`.s7dcl`** source document (the matching `.s7res` is picked up automatically), or a **`.scl`** / **`.db`** / **`.udt`** source in the VS Code Explorer to open it. What a click opens is controlled by the **`tiaViewer.editor.openOnClick`** setting: `source` (the default) opens the block source in the regular text editor, `preview` opens the graphical viewer. Alternatively, right-click the file and choose **Graphical preview LAD/FBD**. XML files that are not TIA Portal exports always open in the regular text editor, and for any supported file the other option stays available via right-click → **Open source file** / **Graphical preview LAD/FBD** (or **Open With...**).
 
 The viewer renders the block interface (resizable, collapsible columns), LAD rungs, FBD networks, syntax-highlighted SCL/STL and GRAPH sequence flowcharts — all following the active VS Code theme. Networks and the interface panel are collapsible (including Expand all / Collapse all), operand labels and call-box pins show comments as tooltips, and Ctrl+wheel zoom / pan / fit-width are available in the toolbar. In a GRAPH flowchart, clicking a transition opens a popup with its LAD/FBD logic network, clicking a step opens its action table, and hovering a step or a transition shows its comment.
 
@@ -199,6 +199,13 @@ Sibling folders are located by walking up to 6 parent directories from the viewe
 | `Open block`                 | Preview right-click on a call box                                            | Open the called FB/FC in the viewer             |
 | `Go to Source Line`          | Preview right-click on a network / part / GRAPH step or transition / interface variable | Jump to the source line in the editor           |
 | `TIA Viewer: Show Logs`      | Command Palette                                                              | Open the extension output channel               |
+
+## Settings
+
+| Setting                                | Values                     | Default  | Description                                                                                                              |
+| -------------------------------------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `tiaViewer.editor.openOnClick`         | `source` / `preview`     | `source` | What clicking a block file (`.s7dcl` / `.db` / `.scl` / `.udt` / SimaticML `.xml`) in the Explorer opens — the block source in the text editor or the Graphical LAD/FBD preview. The other option stays available via right-click → **Open With...** |
+| `tiaViewer.lmTools.autoConfirmPlcWrites` | `true` / `false`         | `false`  | Skip the confirmation dialog when a Copilot language model tool writes a variable to the online PLC — enable only in safe setups |
 
 ---
 

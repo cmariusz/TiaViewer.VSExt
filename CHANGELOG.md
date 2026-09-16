@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.1.103]
+
+- Add preview of interlocks, supervisions and pre, post - instructions, fixed online display of TIME variable (eg. T#10h23m15s123ms)
+
+## [1.1.91]
+
+- **Configurable Explorer click behavior** — the new `tiaViewer.editor.openOnClick` setting decides what clicking a block file (`.s7dcl`, `.db`, `.scl`, `.udt`, SimaticML `.xml`) in the Explorer opens: `source` (the new default) opens the block source in the regular text editor, `preview` opens the Graphical LAD/FBD viewer. VS Code cannot distinguish single- from double-click for custom editors, so this replaces the earlier double-click attempts; the other option stays available via right-click → **Open With...** or the context-menu commands.
+
 ## [1.1.87]
 
 - **Review last changes** — a graphical git diff for PLC blocks: right-click a block source in the Explorer (`.s7dcl`, `.xml`, `.db`, `.scl`, `.udt`) → **Review last changes** opens the graphical LAD/FBD preview with the changes highlighted. The review basis is the working tree vs git HEAD (uncommitted changes) when there are any, otherwise the last commit that touched the file (an information message names the shown commit; a single-commit file is shown as fully added). Added/changed elements — gates, call boxes, contacts/coils and operand labels (variable names) — are drawn **green**; deleted content is **red**: a deleted rung merges back into its network and is drawn in place with red gates, labels and wires (a deleted pin on a surviving box is restored so the red wire keeps its original endpoint), a wholly deleted network appears as a red dashed "Deleted network" section at its original position, and deletions that cannot be rendered (e.g. a single pin line) mark the neighboring element red. SCL/STL networks (including SCL inserts in FBD/LAD blocks) show a git-style line diff instead: added code lines with a green background and a `+` gutter, deleted lines inserted from the old version with a red background and a `−` gutter. The `.s7dcl` parser now captures per-element and per-pin source lines (previously one line per rung), so the highlighting points at the exact element that changed — "Go to Source Line" benefits from the same precision. The diff markup is opt-in (`diffAdded`/`diffDeleted`/`diffDeletedBlocks`/`diffOldText` render parameters + conditionally appended `viewer-diff.css`), leaving the frozen HTML goldens byte-identical.
