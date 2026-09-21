@@ -1,5 +1,9 @@
 # Change Log
 
+## [2.0.0]
+
+- **License change** — TIA Viewer is now proprietary commercial software of CmSoft, licensed under the End User License Agreement ([LICENSE.md](LICENSE.md)); see also [TERMS.md](TERMS.md) (terms of sale) and [PRIVACY.md](PRIVACY.md) (privacy policy — no telemetry, no project data leaves your machine). Versions **1.1.104 and earlier** remain available under the MIT License (reproduced in section 20 of the EULA).
+
 ## [1.1.103]
 
 - Add preview of interlocks, supervisions and pre, post - instructions, fixed online display of TIME variable (eg. T#10h23m15s123ms)

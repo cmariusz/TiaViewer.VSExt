@@ -1,13 +1,13 @@
 # TIA Viewer and Web Generator
 
 <!-- VERSION-BADGE -->
-[![Version](https://img.shields.io/badge/version-1.1.104-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue)](package.json)
 <!-- /VERSION-BADGE -->
 
 [![VS Code](<https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode>)](https://code.visualstudio.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: Commercial EULA](https://img.shields.io/badge/License-Commercial%20EULA-blue.svg)](LICENSE.md)
 [![Platform: Windows](https://img.shields.io/badge/Platform-Windows-0078D6?logo=windows)](https://www.microsoft.com/windows)
-[![Author](<https://img.shields.io/badge/Author-Mariusz%20Czyrnek-orange?logo=linkedin>)](https://www.linkedin.com/in/mariusz-czyrnek-a33b87a6)
+[![Author](<https://img.shields.io/badge/Author-CmSoft-orange?logo=linkedin>)](https://www.linkedin.com/in/mariusz-czyrnek-a33b87a6)
 [![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=68KF5N2K5QQVY)
 
 **Graphical viewer for Siemens TIA Portal PLC exports** — renders LAD/FBD networks, SCL/STL sources, GRAPH sequential function charts, data blocks, PLC data types and tag tables as readable HTML directly inside VS Code or as standalone HTML files. TIA software web preview generator for rewiew software in the web browser and analyse online data.
@@ -256,14 +256,16 @@ The library parses SimaticML **XML** and S7 **`.s7dcl` + `.s7res`** sources into
 ## Documentation
 
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) — third-party components and redistribution notes
+- [LICENSE.md](LICENSE.md) / [TERMS.md](TERMS.md) / [PRIVACY.md](PRIVACY.md) — license agreement, terms of sale, privacy policy
 - [CHANGELOG.md](CHANGELOG.md) — release history
 
 ---
 
 ## Third-Party Licensing & Redistribution
 
-- This extension code is released under [MIT](LICENSE).
-- Third-party notices for the packaged npm components (`electron-edge-js`, `edge-js`, `edge-cs`) are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+- This extension is proprietary commercial software licensed under the [End User License Agreement](LICENSE.md). Versions 1.1.104 and earlier were released under the MIT License and remain MIT-licensed; version 2.0.0 and later are not.
+- Redistribution of the extension package by anyone other than the Visual Studio Marketplace and the Open VSX Registry is not permitted.
+- Third-party notices for the packaged npm components (`electron-edge-js`, `edge-js`, `edge-cs`) are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md); those components keep their own (open-source) licenses.
 - This package contains **no Siemens components** — it neither uses nor redistributes `Siemens.Engineering.*` assemblies, and no TIA Portal installation or license is required to view export files.
 
 ---
@@ -281,6 +283,8 @@ The extension is a development and documentation tool. It only reads files and n
 
 The author is not liable for any direct or indirect damages, production downtime, data loss, or other consequences resulting from decisions made based on the rendered previews. Users are fully responsible for validating programs in TIA Portal before deployment to real machines, production lines, or safety-related systems.
 
+These terms are binding as section 14 of the [End User License Agreement](LICENSE.md#14-your-content-generated-code-and-safety-critical-use).
+
 ---
 
 ## Community — Share Your Scripts & Ideas
@@ -290,8 +294,23 @@ The author is not liable for any direct or indirect damages, production downtime
 1. **Fork** the [TiaViewer.VSExt](https://github.com/cmariusz/TiaViewer.VSExt) repository on GitHub
 2. **Open a Pull Request** — your contribution will help the entire TIA Portal + VS Code community
 
+> By submitting a contribution you confirm that it is your own work and you grant CmSoft a perpetual, worldwide, royalty-free right to use, modify and distribute it as part of this product. Contributions are published under the terms of the [EULA](LICENSE.md); the extension's own source code is not open source.
+
 ---
 
 ## License
 
-[MIT](LICENSE) — Copyright (c) 2026 Mariusz Czyrnek
+Proprietary commercial software — see the [End User License Agreement](LICENSE.md).
+Copyright © 2026 CmSoft. All rights reserved.
+
+**CmSoft** — Kornatka 23, 32-410 Dobczyce, Poland · NIP (VAT-ID) PL 894-253-07-59
+· [office@cmsoft.com.pl](mailto:office@cmsoft.com.pl) · [www.cmsoft.com.pl](https://www.cmsoft.com.pl)
+
+| Document | Purpose |
+| --- | --- |
+| [LICENSE.md](LICENSE.md) | End User License Agreement (terms of use) |
+| [TERMS.md](TERMS.md) | Terms of sale for paid plans |
+| [PRIVACY.md](PRIVACY.md) | Privacy policy — no telemetry, no project data leaves your machine |
+| [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | Third-party components and their licenses |
+
+**Versions 1.1.104 and earlier** were published under the MIT License. That grant is irrevocable for those versions and is reproduced in section 20 of [LICENSE.md](LICENSE.md). It does not apply to version 2.0.0 or later.
