@@ -1,7 +1,7 @@
 # TIA Viewer and Web Generator
 
 <!-- VERSION-BADGE -->
-[![Version](https://img.shields.io/badge/version-2.0.0-blue)](package.json)
+[![Version](https://img.shields.io/badge/version-2.0.1-blue)](package.json)
 <!-- /VERSION-BADGE -->
 
 [![VS Code](<https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode>)](https://code.visualstudio.com/)
@@ -163,6 +163,16 @@ While a preview panel is online, GitHub Copilot (agent mode / chat participants)
 
 The Accessible/Writable attributes are verified against the exported block sources in the workspace (found anywhere — `Program blocks`, `Units/<unit>`, `Technology objects` or loose PLC folders) with the same inheritance rules as the interface table. This enables agentic workflows such as PID tuning: Copilot records the controller's setpoint / process value / output into the trend, reads the step response, writes adjusted parameters and repeats — you only go online once and confirm the writes. Writes are confirmed per call unless you enable `tiaViewer.lmTools.autoConfirmPlcWrites` (use only in safe setups — writing to a running PLC affects the controlled process).
 
+#### MCP server (PLC online for external agents)
+
+The extension also runs a localhost-only **MCP server** (Streamable HTTP, `http://127.0.0.1:<port>/mcp`) that exposes the same four `tia_viewer_*` tools to any MCP client — Claude Desktop, coding agents, your own scripts. It starts with the extension (disable via `tiaViewer.mcp.enabled`) and is discovered by VS Code Copilot (1.99+) automatically through the MCP server definition provider; other clients read the connection info from the state file `.tia/mcp-viewer.json`:
+
+```json
+{ "version": 1, "host": "127.0.0.1", "port": 58470, "token": "…", "endpoint": "/mcp", "transport": "streamable-http" }
+```
+
+The file is always written to the extension's global storage, and to the workspace as well once the workspace is used for TIA work (unless `tiaViewer.mcp.writeWorkspaceStateFile` is disabled). The port and the per-start Bearer `token` change on every activation, so clients must read the file each session; `GET /health` (no auth) returns the tool list. PLC writes requested by an MCP client are confirmed by **you** with a modal VS Code dialog unless `tiaViewer.lmTools.autoConfirmPlcWrites` is enabled. Command Palette: **TIA Viewer: Start MCP Server** re-enables the server when it was disabled.
+
 ### Supported input formats
 
 | Format                        | Extension               | Description                                                                                                                    |
@@ -198,6 +208,7 @@ Sibling folders are located by walking up to 6 parent directories from the viewe
 | `Generate Web Preview`       | Explorer right-click on a PLC folder                                         | Render the whole PLC to a browsable HTML site   |
 | `Open block`                 | Preview right-click on a call box                                            | Open the called FB/FC in the viewer             |
 | `Go to Source Line`          | Preview right-click on a network / part / GRAPH step or transition / interface variable | Jump to the source line in the editor           |
+| `TIA Viewer: Start MCP Server` | Command Palette                                                                      | Enable the MCP server when it was disabled      |
 | `TIA Viewer: Show Logs`      | Command Palette                                                              | Open the extension output channel               |
 
 ## Settings
@@ -205,7 +216,9 @@ Sibling folders are located by walking up to 6 parent directories from the viewe
 | Setting                                | Values                     | Default  | Description                                                                                                              |
 | -------------------------------------- | -------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
 | `tiaViewer.editor.openOnClick`         | `source` / `preview`     | `source` | What clicking a block file (`.s7dcl` / `.db` / `.scl` / `.udt` / SimaticML `.xml`) in the Explorer opens — the block source in the text editor or the Graphical LAD/FBD preview. The other option stays available via right-click → **Open With...** |
-| `tiaViewer.lmTools.autoConfirmPlcWrites` | `true` / `false`         | `false`  | Skip the confirmation dialog when a Copilot language model tool writes a variable to the online PLC — enable only in safe setups |
+| `tiaViewer.lmTools.autoConfirmPlcWrites` | `true` / `false`         | `false`  | Skip the confirmation dialog when a Copilot language model tool or an MCP client writes a variable to the online PLC — enable only in safe setups |
+| `tiaViewer.mcp.enabled`                  | `true` / `false`         | `true`   | Run the localhost-only MCP server (Streamable HTTP) exposing the `tia_viewer_*` PLC online tools to MCP clients; the endpoint and Bearer token are written to `.tia/mcp-viewer.json` while running |
+| `tiaViewer.mcp.writeWorkspaceStateFile`  | `true` / `false`         | `true`   | Also write the `.tia/mcp-viewer.json` state file into workspaces used for TIA work, so external agents can discover the endpoint and token |
 
 ---
 
@@ -256,7 +269,7 @@ The library parses SimaticML **XML** and S7 **`.s7dcl` + `.s7res`** sources into
 ## Documentation
 
 - [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) — third-party components and redistribution notes
-- [LICENSE.md](LICENSE.md) / [TERMS.md](TERMS.md) / [PRIVACY.md](PRIVACY.md) — license agreement, terms of sale, privacy policy
+- [LICENSE.md](LICENSE.md) / [TERMS.md](TERMS.md) / [PRIVACY.md](PRIVACY.md) / [SECURITY.md](SECURITY.md) — license agreement, terms of sale, privacy policy, security policy
 - [CHANGELOG.md](CHANGELOG.md) — release history
 
 ---
@@ -279,11 +292,11 @@ The library parses SimaticML **XML** and S7 **`.s7dcl` + `.s7res`** sources into
 
 ## Disclaimer of Liability
 
-The extension is a development and documentation tool. It only reads files and never modifies engineering data.
+The extension is a development and documentation tool. Previews are rendered from export files on disk and never modify engineering data; **online sessions are different**: when you go online — yourself or through an AI assistant using the Copilot language model tools — the extension reads and can **write variable values on a running PLC**, and every such write can immediately affect the controlled machine or process.
 
-The author is not liable for any direct or indirect damages, production downtime, data loss, or other consequences resulting from decisions made based on the rendered previews. Users are fully responsible for validating programs in TIA Portal before deployment to real machines, production lines, or safety-related systems.
+The author is not liable for any direct or indirect damages, production downtime, data loss, or other consequences resulting from decisions made based on the rendered previews, **nor for the effects of any online read or write — whether initiated by you, by another person using your installation, or by an AI assistant acting on your behalf. You alone are responsible for the effects of those changes.** Confirm every write, keep `tiaViewer.lmTools.autoConfirmPlcWrites` off outside safe setups, and validate programs in TIA Portal before deployment to real machines, production lines, or safety-related systems.
 
-These terms are binding as section 14 of the [End User License Agreement](LICENSE.md#14-your-content-generated-code-and-safety-critical-use).
+These terms are binding as section 14 of the [End User License Agreement](LICENSE.md#14-your-content-generated-code-and-safety-critical-use) (in particular 14.3 *Going online to a controller* and 14.4 *AI-assisted output*).
 
 ---
 
@@ -311,6 +324,7 @@ Copyright © 2026 CmSoft. All rights reserved.
 | [LICENSE.md](LICENSE.md) | End User License Agreement (terms of use) |
 | [TERMS.md](TERMS.md) | Terms of sale for paid plans |
 | [PRIVACY.md](PRIVACY.md) | Privacy policy — no telemetry, no project data leaves your machine |
+| [SECURITY.md](SECURITY.md) | Security policy — how to report vulnerabilities |
 | [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) | Third-party components and their licenses |
 
 **Versions 1.1.104 and earlier** were published under the MIT License. That grant is irrevocable for those versions and is reproduced in section 20 of [LICENSE.md](LICENSE.md). It does not apply to version 2.0.0 or later.

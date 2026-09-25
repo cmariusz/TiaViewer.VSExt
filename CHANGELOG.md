@@ -1,8 +1,14 @@
 # Change Log
 
+## [2.0.1]
+
+- **MCP server (Streamable HTTP)** — the extension now runs a localhost-only MCP server (`http://127.0.0.1:<port>/mcp`) that exposes the four `tia_viewer_*` PLC online tools (sessions, read, write, trend data) to any MCP client — VS Code Copilot (auto-discovered on 1.99+ via the MCP server definition provider), Claude Desktop or custom agents. The endpoint URL and per-start Bearer token are written to `.tia/mcp-viewer.json` (extension global storage, plus the workspace once it is used for TIA work); `GET /health` returns the tool list without auth. New settings `tiaViewer.mcp.enabled` (default on) and `tiaViewer.mcp.writeWorkspaceStateFile`, new command **TIA Viewer: Start MCP Server**. PLC writes requested by an MCP client are confirmed by the local user with a modal dialog unless `tiaViewer.lmTools.autoConfirmPlcWrites` is enabled — the tool logic itself is shared 1:1 with the Copilot language model tools (extracted to `plcToolExecutors.ts`), guarded by a new `test:mcp-tool-parity` build check.
+- **Legal documents updated for the MCP server** — EULA 1.2 (new section 14.9 "Built-in MCP server and local automation"; the "AI Assistant" definition and sections 14.3/14.4 now cover MCP clients), Privacy Policy 1.2 (Section 2a covers the MCP server, its `127.0.0.1` binding and the per-session token in `.tia/mcp-viewer.json`) and [SECURITY.md](SECURITY.md) 1.1 (MCP server added to the in-scope list).
+
 ## [2.0.0]
 
 - **License change** — TIA Viewer is now proprietary commercial software of CmSoft, licensed under the End User License Agreement ([LICENSE.md](LICENSE.md)); see also [TERMS.md](TERMS.md) (terms of sale) and [PRIVACY.md](PRIVACY.md) (privacy policy — no telemetry, no project data leaves your machine). Versions **1.1.104 and earlier** remain available under the MIT License (reproduced in section 20 of the EULA).
+- **Legal documents updated to v1.1** — EULA, Terms of Sale and Privacy Policy aligned with the TIA Portal Import extension: multi-Seat/organisation and virtual-environment rules, 30-day notice for EULA changes affecting paid features, indemnification (business customers), AI Act section, force majeure, GDPR processor/data-portability details, and a new [SECURITY.md](SECURITY.md) (vulnerability reporting, Cyber Resilience Act). New EULA section **14.3 "Going online to a controller"**: going online — by you or by an AI assistant through the Copilot tools — reads and writes values on a running PLC, and **you alone are responsible for the effects of those changes**; 14.4 covers AI-initiated reads/writes and the `tiaViewer.lmTools.autoConfirmPlcWrites` setting.
 
 ## [1.1.103]
 
