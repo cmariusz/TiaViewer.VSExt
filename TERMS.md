@@ -1,8 +1,8 @@
 # Terms of Sale
 
-**Product:** TIA Viewer — Visual Studio Code extension (`MariuszCzyrnek.tia-viewer`)
-**Seller:** CmSoft, Kornatka 23, 32-410 Dobczyce, Poland, VAT-ID: PL 894-253-07-59 — `office@cmsoft.com.pl`, [https://www.cmsoft.com.pl](https://www.cmsoft.com.pl)
-**Version:** 1.1 — 2026-09-25
+**Product:** CMsoft Viewer for TiaPortal (formerly TIA Viewer) — Visual Studio Code extension (`MariuszCzyrnek.tia-viewer`)
+**Seller:** Mariusz Czyrnek CM-SOFT, trading as CMsoft, Kornatka 23, 32-410 Dobczyce, Poland, VAT-ID: PL 894-253-07-59 — `office@cmsoft.com.pl`, [https://shop.cmsoft.com.pl](https://shop.cmsoft.com.pl)
+**Version:** 1.3 — 2026-10-12
 
 These Terms of Sale govern the purchase of paid plans for the Software. Use of
 the Software itself is governed by the [End User License Agreement](LICENSE.md)
@@ -15,52 +15,90 @@ case of conflict regarding the scope of the license, the EULA prevails.
 
 The Software is distributed free of charge through the Visual Studio Marketplace
 and the Open VSX Registry. A defined set of Free Features can be used without
-any payment and without activation. Paid Features require an active
-subscription. The current split between Free and Paid Features, and the current
-prices, are published on the product purchase page and in the
-[`README.md`](README.md) of the applicable version.
+any payment and without activation. Paid Features require an active license: a
+subscription, a license bought with a one-time payment, or a free trial. The
+current split between Free and Paid Features, and the current prices, are
+published on the product purchase page and in the [`README.md`](README.md) of
+the applicable version.
 
 ## 2. No purchase through the extension registries
 
 Neither the Visual Studio Marketplace nor the Open VSX Registry processes
-payments for this Software. All purchases are concluded directly with the Seller
-or through the payment provider indicated on the purchase page, which may act as
-**merchant of record** and issue the invoice in its own name.
+payments for this Software. Our order process is conducted by our online
+reseller Paddle.com. Paddle.com is the Merchant of Record for all our orders:
+it takes the payment, handles taxes and issues the invoice in its own name
+([Paddle's buyer terms](https://www.paddle.com/legal/buyer-terms) also apply).
 
 ## 3. Conclusion of the contract
 
 The contract is concluded when the Seller (or the payment provider) confirms
-your order. Prices shown are per Seat, for the stated billing period, and are
-exclusive of VAT unless stated otherwise. VAT is added where required; for EU
-business customers with a valid VAT-ID, the reverse-charge mechanism may apply.
+your order. Every license is a single-Seat license: it covers one workstation.
+Prices shown are per license, for the chosen term (one month or one year), and
+are exclusive of VAT unless stated otherwise. VAT is added where required; for
+EU business customers with a valid VAT-ID, the reverse-charge mechanism may
+apply. The order names the company the license is issued to — or your name if
+you buy as a consumer — and its country; the Seller records them on the license,
+and the company or name appears in the license details.
 
 ## 4. Delivery and activation
 
-After payment is confirmed, a license key is delivered to the e-mail address you
-provided, normally within one business day. The key unlocks Paid Features for
-the purchased number of Seats and for the purchased term. Activation is bound to
-the workstations on which it is used; a Seat can be released and reassigned by
-deactivating it on the previous machine.
+When you buy in the license panel, the license is activated in the extension
+automatically as soon as the payment is confirmed, and the license key is also
+sent to the e-mail address you provided. If the activation does not complete —
+for example because the panel was closed — *Refresh license status* in the
+license panel fetches the license bought for this computer (the extension also
+checks by itself for up to 7 days); a key from the e-mail can be entered under
+*I have a key*. Orders by e-mail are processed manually; their key is normally
+delivered within one business day. The key unlocks Paid Features on one
+workstation for the purchased term. Activation binds the license to that
+workstation. Deactivating the license in the extension removes the key from the
+workstation but does not release its Seat on the license server; to move the
+license to another workstation, contact the Seller (Section 12).
 
-For organisation orders with several Seats, the ordering organisation names a
-contact person who manages the assignment of Seats and the billing relationship
-and keeps the organisation's billing data up to date. The rules for assigning
-Seats to named individuals are set out in Section 2 of the EULA.
+An organisation that needs several workstations orders one license per
+workstation and names a contact person who manages the assignment of its
+licenses and the billing relationship and keeps the organisation's billing data
+up to date. The rules for assigning licenses to named individuals are set out in
+Section 2 of the EULA.
 
-## 5. Subscription term, renewal and cancellation
+## 4a. Free trial
 
-1. Subscriptions run for the period selected at purchase (for example monthly or
-   annual) and renew automatically for the same period unless cancelled.
-2. You may cancel at any time with effect from the end of the current billing
-   period; access to Paid Features continues until then.
-3. Prices for renewals may change; you will be notified at least 30 days before
+Where the license panel offers it, you can try the Paid Features free of charge
+for 14 days. A trial needs no payment details, is bound to the computer it was
+started on and is available once per product, computer and e-mail address. It
+ends automatically and does not turn into a paid plan; a license bought during
+the trial replaces it.
+
+## 5. Term, renewal and cancellation
+
+1. When buying online you choose, for one month or one year, between a
+   **subscription**, which renews automatically for the same period until
+   cancelled, and a **one-time payment**, which buys that period once and does
+   not renew.
+2. A license bought with a one-time payment ends when its term ends; to
+   continue, buy again. A one-time purchase made while a paid license of the
+   same product is active on the computer starts when that license ends, so no
+   days are lost. Licenses bought on invoice for a fixed term do not renew
+   automatically either.
+3. You may cancel a subscription at any time — in the license panel
+   (*Cancel subscription* under *Your license*) or through the payment
+   provider's subscription management — with effect from the end of the
+   current billing period; nothing more is charged and Paid Features remain
+   available until then.
+4. Prices for renewals may change; you will be notified at least 30 days before
    a price change takes effect and may cancel before it applies.
-4. If a payment fails or a subscription expires, Paid Features stop working.
-   Free Features and all previews and files previously generated in your
-   workspace remain fully usable.
-5. Licenses bought on invoice for a fixed term do not renew automatically; they
-   end when the paid term ends.
-6. If you cancel because of a change to the EULA announced under Section 18 of
+5. Paid Features remain available for **14 days** after the end of a paid
+   license (grace period), for example while a renewal payment is processed;
+   free trials have no grace period. If a payment fails or a license expires
+   and the grace period has passed, Paid Features stop working. Free Features
+   and all previews and files previously generated in your workspace remain
+   fully usable.
+6. The Seller may revoke a license key, for example when it has been
+   compromised, when the payment has been charged back, or when the EULA is
+   terminated for a breach. The extension removes a revoked key from the
+   computer at its next online check of the license and tells you; Paid
+   Features then stop working, Free Features are not affected.
+7. If you cancel because of a change to the EULA announced under Section 18 of
    the EULA, the Seller refunds the prepaid fee for the part of the billing
    period after the change takes effect.
 
@@ -76,13 +114,21 @@ right. You give this consent when you request delivery of the license key.
 To withdraw before delivery begins, send an unambiguous statement to
 `office@cmsoft.com.pl`.
 
+Independently of this statutory right, the 14-day money-back guarantee of
+section 7 applies to every purchase — you do not lose it by requesting delivery
+of the license key.
+
 ## 7. Refunds
 
-Beyond the statutory rights above, the Seller may grant a goodwill refund of the
-current billing period if the Software does not work in your environment and the
-problem cannot be resolved within a reasonable time. Refund requests should be
-sent to `office@cmsoft.com.pl` with a description of the problem and the
-diagnostic log (*TIA Viewer: Show Logs*).
+Every purchase and every renewal payment comes with a **14-day money-back
+guarantee**: if you ask for a refund within 14 days of the payment, you get the
+full amount back without giving a reason — through Paddle's buyer support
+(<https://paddle.net>) or by e-mail to `office@cmsoft.com.pl`, with the order
+number. After 14 days, refund requests are assessed individually, for example
+when the Software does not work in your environment and the problem cannot be
+resolved within a reasonable time; include a description of the problem and the
+diagnostic log (*CMsoft Viewer for TiaPortal: Show Logs*). A refunded license is revoked. Details:
+the [Refund Policy](https://shop.cmsoft.com.pl/en/zwroty).
 
 ## 8. Support
 
@@ -128,8 +174,8 @@ continue to apply, and the EU Online Dispute Resolution platform is available at
 
 ## 12. Contact
 
-**CmSoft**
+**Mariusz Czyrnek CM-SOFT**
 Kornatka 23, 32-410 Dobczyce, Poland
 VAT-ID: PL 894-253-07-59
 E-mail: `office@cmsoft.com.pl`
-Web: [https://www.cmsoft.com.pl](https://www.cmsoft.com.pl)
+Web: [https://shop.cmsoft.com.pl](https://shop.cmsoft.com.pl)
