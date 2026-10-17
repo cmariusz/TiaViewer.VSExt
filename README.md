@@ -1,7 +1,9 @@
 # CMsoft Viewer for TiaPortal — Viewer and Web Generator
 
+🌐 **[www.cmsoft.com.pl](https://www.cmsoft.com.pl)** — all CMsoft extensions, the shop and contact
+
 <!-- VERSION-BADGE -->
-[![Version](https://img.shields.io/badge/version-2.1.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue)](CHANGELOG.md)
 <!-- /VERSION-BADGE -->
 
 [![VS Code](https://img.shields.io/badge/VS%20Code-%3E%3D1.95.0-blue?logo=visualstudiocode)](https://code.visualstudio.com/)
@@ -74,7 +76,9 @@ The extension ships TextMate grammars (the same mechanism the C/C++ and C# exten
 | **Generate HTML preview file** | Right-click a block source (`.xml` / `.s7dcl` / `.db` / `.scl` / `.udt`) → writes `<file>.preview.html` next to the source. Fully self-contained (styles + scripts embedded), opens in any browser. Call boxes become links to the previews of called blocks when they sit next to the source.                                                                                                                                                                                                                                                                                                                                  |
 | **Whole-PLC Web Preview**      | Right-click a PLC folder → **Generate Web Preview** → pick the output folder. Every block under `Program blocks` / `PLC data types` / `Technology objects` (also inside every `Units/<unit>` folder), every tag table under `PLC tags` (`.xlsx` / `.xml`, sorted by PLC address) and every watch table under `Watch and force tables` becomes a standalone HTML page in a mirror folder tree, tied together by a self-contained `index.html` navigator: collapsible sidebar tree mirroring the TIA folder structure, block filter, split view for comparing two blocks, dark/light theme, cross-block navigation links and a **PLC Online** panel with live values, writes and a trend chart. The viewer CSS/JS is shared from a single `_assets/` copy, so even ~1200-block PLCs stay compact and open fast. |
 
-### WinCC dynamic widgets from S7-GRAPH (SVGHMI)
+### WinCC dynamic widgets from S7-GRAPH (SVGHMI) — experimental
+
+> **Experimental.** The SVGHMI export is an experimental feature and does not have its full functionality yet — what it does and does not do is described under *Generating WinCC SVGHMI widgets from GRAPH sequences* below.
 
 | Capability                              | Description |
 | --------------------------------------- | ----------- |
@@ -94,7 +98,7 @@ CMsoft Viewer for TiaPortal is free to use; a **CMsoft Viewer for TiaPortal PRO*
 | Online trend chart in VS Code                                                             | 1 variable             | ✅ up to 10        |
 | Generate HTML preview file                                                                | ⛔                     | ✅                 |
 | Generate Web Preview (whole PLC in the browser, PLC Online, trends)                       | ⛔                     | ✅                 |
-| Generate WinCC SVGHMI widgets from S7-GRAPH sequences (WinCC Unified, WinCC V8)          | ⛔                     | ✅                 |
+| Generate WinCC SVGHMI widgets from S7-GRAPH sequences (WinCC Unified, WinCC V8) — experimental | ⛔                     | ✅                 |
 | Copilot language model tools, MCP server                                                  | ⛔                     | ✅                 |
 
 When the FREE minute of a PLC connection is used up, the preview goes offline — press **Go online** again to continue.
@@ -200,7 +204,15 @@ The extension also runs a localhost-only **MCP server** (Streamable HTTP, `http:
 
 The file is always written to the extension's global storage, and to the workspace as well once the workspace is used for TIA work (unless `tiaViewer.mcp.writeWorkspaceStateFile` is disabled); the workspace copy is listed in `.tia/.gitignore`, so the token does not end up in the project's repository. The port and the per-start Bearer `token` change on every activation, so clients must read the file each session; `GET /health` (no auth) returns the tool list. The server answers only requests addressed to the loopback interface — a `Host` or browser `Origin` naming another host is refused (DNS rebinding protection). PLC writes requested by an MCP client are confirmed by **you** with a modal VS Code dialog unless `tiaViewer.lmTools.autoConfirmPlcWrites` is enabled. Command Palette: **CMsoft Viewer for TiaPortal: Start MCP Server** re-enables the server when it was disabled.
 
-### Generating WinCC SVGHMI widgets from GRAPH sequences (PRO)
+### Generating WinCC SVGHMI widgets from GRAPH sequences (PRO, experimental)
+
+> **Experimental — not the full functionality yet.** The export writes the sequence chart, the step and transition views and the *Sequence control* station, but:
+>
+> - it does not connect the widget to tags — WinCC does that when the widget is placed on a screen, and `<widget>.bindings.json` is only the checklist for it;
+> - the views and the station use the event model of the WinCC Unified controls, which Siemens does not document for custom widgets: they are meant for the WinCC Unified PC Runtime; for WinCC V8 and the Unified Comfort Panels use the display-only chart;
+> - the widgets were checked against the Siemens SVGHMI rules and in the SVGHMI preview of this extension, not in every WinCC runtime.
+>
+> Test every widget in your target runtime before you use it on a plant.
 
 1. Right-click an S7-GRAPH block export (SimaticML `.xml`) — or a folder, which is searched recursively for GRAPH blocks — and choose **Generate WinCC SVGHMI (GRAPH)**. While the graphical preview shows a GRAPH block, the same command sits as a button in the editor title bar.
 2. One widget file is written per sequence: `GRAPH_<block>.svghmi` (`GRAPH_<block>_Seq<n>.svghmi` for blocks with several sequences), next to the export — or into the folder set in **`tiaViewer.svghmi.outputFolder`**. Point that setting at the project's `UserFiles\SVGControls` folder to write the widgets straight where WinCC picks them up.
@@ -218,6 +230,8 @@ The file is always written to the extension's global storage, and to the workspa
 | `AUTO_ON`, `TAP_ON`, `TOP_ON`, `MAN_ON`, `ERR_FLT` | `"<instance DB>".AUTO_ON` … | active mode and the error indicator of the header strip / station |
 | `INIT_SQ`, `OFF_SQ`, `ACK_EF`, `SW_AUTO`, `SW_TAP`, `SW_TOP`, `SW_MAN`, `T_PUSH`, `S_SEL`, `S_ON`, `S_OFF` | the variable wired to the pin of the FB call, else `"<instance DB>".INIT_SQ` … | **two-way** commands the station writes (true while the button is pressed; `S_SEL` = step number) |
 | `BackColor`, `StepColor`, `ActiveColor`, `WarningColor`, `FaultColor`, `LineColor`, `TextColor` | — (HmiColor `0xAARRGGBB`) | colors of the chart; `BackColor` defaults to transparent |
+| `DarkTheme` | — (Boolean; `true` on screens with a dark design, or a tag that switches the design) | dark theme: `StepColorDark`, `LineColorDark`, `TextColorDark` replace `StepColor`, `LineColor`, `TextColor`, and the header strip, the views and the station turn dark |
+| `StepColorDark`, `LineColorDark`, `TextColorDark` | — (HmiColor `0xAARRGGBB`) | colors of the chart in the dark theme (the state colors and `BackColor` serve both themes) |
 
 The notification after the export offers **Open Preview** — see the next section — and **Open Bindings**.
 
@@ -234,7 +248,7 @@ Double-click a `.svghmi` file in the Explorer (or right-click → **Open SVGHMI 
 - The widget is drawn the way the WinCC runtime draws it: every `hmi-bind` expression (`{{Converter.RGBA(ParamProps.Color)}}`, `{{ParamProps.On ? 'inline' : 'none'}}`, `translate({{…}})`, local tags, dynamic `hmi:text`) is evaluated with the parameter values of the panel on the right — Boolean parameters as checkboxes, numbers as fields, `HmiColor` parameters as color pickers. Values differing from the default are highlighted; **Reset** restores the defaults.
 - **Click a shape** to list only its parameters; **double-click** toggles its first Boolean parameter — on a generated GRAPH widget, double-clicking a step switches the step active.
 - The widget's own **actions** (`hmi:action` with `hmi-event:tapped` / `down` / `up` / `mouseLeave`) run like in WinCC Unified: on a generated GRAPH widget a tap opens the step/transition views and the station buttons pulse their commands. Values the widget writes to **two-way** parameters (marked ⇄) update the panel and are listed under *Widget writes*; `enum` parameters get a drop-down.
-- **Zoom** with the toolbar buttons or Ctrl+wheel, **Fit** fits the widget into the window; the background imitates a light or dark WinCC screen, a transparency grid or the editor theme.
+- **Zoom** with the toolbar buttons or Ctrl+wheel, **Fit** fits the widget into the window; the background imitates a light or dark WinCC screen, a transparency grid or the editor theme. A widget with a Boolean `DarkTheme` parameter — the generated GRAPH widgets — follows the background: the dark screen (or the editor theme of a dark VS Code theme) sets it, the light screen clears it.
 - **Findings** check the file against the Siemens SVGHMI rules: missing DOCTYPE or `<hmi:self>`, a name without `extended.`, `preserveAspectRatio` other than `none`, CSS styles, scripts, animations, `foreignObject`, parameters or local tags used but not declared, events pointing at missing actions, actions writing parameters that are not two-way, and every expression that fails to evaluate. What WinCC would not render (CSS, scripts, external references) is not rendered by the preview either.
 - **Open source file** in the editor title shows the XML; edits re-render the preview live, keeping the parameter values.
 
@@ -278,7 +292,7 @@ Sibling folders are located by walking up to 6 parent directories from the viewe
 | `Open source file`           | Explorer right-click on a block source or `.svghmi` file, editor title of the SVGHMI preview, Command Palette (the source of the active preview) | Open the source in the text editor (bypasses the graphical default editor) |
 | `Generate HTML preview file` | Explorer right-click on block source(s)                                      | Write `<file>.preview.html` next to the source (PRO) |
 | `Generate Web Preview`       | Explorer right-click on a PLC folder, Command Palette (the PLC of the active file) | Render the whole PLC to a browsable HTML site (PRO) |
-| `Generate WinCC SVGHMI (GRAPH)` | Explorer right-click on GRAPH block export(s) / a folder, editor title of a GRAPH preview | Write the GRAPH sequences as dynamic SVG widgets (`.svghmi`) for WinCC Unified / WinCC V8 (PRO) |
+| `Generate WinCC SVGHMI (GRAPH)` | Explorer right-click on GRAPH block export(s) / a folder, editor title of a GRAPH preview | Write the GRAPH sequences as dynamic SVG widgets (`.svghmi`) for WinCC Unified / WinCC V8 (PRO, experimental) |
 | `Open SVGHMI Preview`        | Explorer right-click on a `.svghmi` file, editor title of its text editor   | Open the widget preview (to the side when invoked from the text editor) |
 | `Open block`                 | Preview right-click on a call box                                            | Open the called FB/FC in the viewer             |
 | `Go to Source Line`          | Preview right-click on a network / part / GRAPH step or transition / interface variable | Jump to the source line in the editor           |
@@ -346,7 +360,7 @@ The viewer reads the export files from disk and draws them with its own .NET Fra
 - **Windows only** — the .NET viewer assembly is loaded through edge-js (`net48`, win32/x64 native binaries)
 - **Know-how protected blocks** — protected blocks cannot be exported by TIA Portal, so there is nothing to view
 - **First connection to a PLC** — S7 CPUs use a self-signed certificate by default, so on the first connection only you can tell that it is the right PLC: compare the fingerprint the dialog shows with the CPU certificate in TIA Portal before trusting it. With a certificate of the TIA Portal project CA on the CPU and that CA's root installed in Windows, no dialog appears. Every CPU with the web API speaks TLS 1.2; older TLS versions are not offered.
-- **SVGHMI interactive parts** — the step/transition views and the *Sequence control* station use the event model of the WinCC Unified controls, which Siemens does not document for custom widgets. Test the generated widgets in your target runtime before using them on a plant; turn `tiaViewer.svghmi.detailViews` / `tiaViewer.svghmi.sequenceControl` off for a display-only chart.
+- **SVGHMI export is experimental** — it does not have its full functionality yet: the widgets are not connected to tags automatically (`<widget>.bindings.json` is the checklist), and the step/transition views and the *Sequence control* station use the event model of the WinCC Unified controls, which Siemens does not document for custom widgets. Test the generated widgets in your target runtime before using them on a plant; turn `tiaViewer.svghmi.detailViews` / `tiaViewer.svghmi.sequenceControl` off for a display-only chart.
 
 ---
 

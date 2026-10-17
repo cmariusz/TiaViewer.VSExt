@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.2.0]
+
+- **WinCC SVGHMI widgets: dark theme** — on a dark screen the steps of a generated GRAPH widget stayed white and the step and transition views, the *Sequence control* station and the header strip stayed light. Every widget now carries a light and a dark palette: the new Boolean parameter `DarkTheme` switches the chart to the new colors `StepColorDark`, `LineColorDark` and `TextColorDark` and turns the header strip, the views (with their networks) and the station dark; the labels of an active step turn black. The SVGHMI preview follows its background: **Dark screen** — or **Editor theme** with a dark VS Code theme, also after a theme change — ticks `DarkTheme`, **Light screen** clears it.
+- **WinCC SVGHMI export marked experimental** — the README, the user manual (chapter 13) and the FREE / PRO table of the license panel now say that the SVGHMI export is experimental and does not have its full functionality yet: it does not connect the widgets to tags, and the views and the station rely on the event model of the WinCC Unified controls, which Siemens does not document for custom widgets.
+- **Website link** — the README starts with a link to [www.cmsoft.com.pl](https://www.cmsoft.com.pl).
+
 ## [2.1.0]
 
 - **New name: CMsoft Viewer for TiaPortal** — the extension formerly called *TIA Viewer* is now *CMsoft Viewer for TiaPortal*: the commands (*CMsoft Viewer for TiaPortal: …*), the Copilot tools, the Output channel and the user manual carry the new name. The extension ID (`MariuszCzyrnek.tia-viewer`), the command IDs, the settings (`tiaViewer.*`) and the generated files stay the same.
