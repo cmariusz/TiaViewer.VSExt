@@ -2,7 +2,7 @@
 
 **Product:** CMsoft Viewer for TiaPortal (formerly TIA Viewer) — Visual Studio Code extension (`MariuszCzyrnek.tia-viewer`)
 **Seller:** Mariusz Czyrnek CM-SOFT, trading as CMsoft, Kornatka 23, 32-410 Dobczyce, Poland, VAT-ID: PL 894-253-07-59 — `office@cmsoft.com.pl`, [https://shop.cmsoft.com.pl](https://shop.cmsoft.com.pl)
-**Version:** 1.3 — 2026-10-12
+**Version:** 1.4 — 2026-10-19
 
 These Terms of Sale govern the purchase of paid plans for the Software. Use of
 the Software itself is governed by the [End User License Agreement](LICENSE.md)
@@ -16,10 +16,9 @@ case of conflict regarding the scope of the license, the EULA prevails.
 The Software is distributed free of charge through the Visual Studio Marketplace
 and the Open VSX Registry. A defined set of Free Features can be used without
 any payment and without activation. Paid Features require an active license: a
-subscription, a license bought with a one-time payment, or a free trial. The
-current split between Free and Paid Features, and the current prices, are
-published on the product purchase page and in the [`README.md`](README.md) of
-the applicable version.
+subscription or a free trial. The current split between Free and Paid Features,
+and the current prices, are published on the product purchase page and in the
+[`README.md`](README.md) of the applicable version.
 
 ## 2. No purchase through the extension registries
 
@@ -71,15 +70,10 @@ the trial replaces it.
 
 ## 5. Term, renewal and cancellation
 
-1. When buying online you choose, for one month or one year, between a
-   **subscription**, which renews automatically for the same period until
-   cancelled, and a **one-time payment**, which buys that period once and does
-   not renew.
-2. A license bought with a one-time payment ends when its term ends; to
-   continue, buy again. A one-time purchase made while a paid license of the
-   same product is active on the computer starts when that license ends, so no
-   days are lost. Licenses bought on invoice for a fixed term do not renew
-   automatically either.
+1. When buying online you choose a **subscription** for one month or one year;
+   it renews automatically for the same period until cancelled.
+2. Licenses bought on invoice for a fixed term do not renew automatically; they
+   end when the paid term ends.
 3. You may cancel a subscription at any time — in the license panel
    (*Cancel subscription* under *Your license*) or through the payment
    provider's subscription management — with effect from the end of the
